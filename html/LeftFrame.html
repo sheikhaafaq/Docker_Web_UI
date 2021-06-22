@@ -1,0 +1,128 @@
+<html>
+    <head>
+        <style>
+            body{ border-style: inset; border-width: 5px; border-color: rgb(8, 185, 255);}
+        
+            button{
+  border: inset;
+  color: white;
+  padding: 5px 57px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 1px 1px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+
+}
+
+button{
+  background-color: white; 
+  color: black;
+  border: 5px inset #008CBA;
+  border-radius: 10px;
+}
+
+button.hover {
+   background-color: #008CBA;
+  color: white;
+  
+}
+
+            </style>
+    </head>
+    <body bgcolor="skyblue">
+	<button id = "b1" onclick= "fun(0);"> Docker Version</button>
+	<button id = "b2" onclick= "fun(1);" > Docker Images </button>
+
+        <button id = "b3" onclick= "fun(2);" > Launch Container </button>
+
+        <button id = "b4" onclick= "fun(3);" > Running Containers </button>
+
+        <button id = "b5" onclick= "fun(4);" > Total Containers </button>
+
+        <button id = "b6" onclick= "fun(5);"> Remove Image </button><br/>
+
+        <button id = "b7" onclick= "fun(6);"> Remove Container </button><br/>
+
+	<button id = "b8" onclick= "fun(7);"> Remove All Containers </button><br/>
+        
+        
+</body>
+</html>
+<script>
+function fun(x) {
+  var op = x
+  switch (op) {
+    case 0:
+      var i = "docker version"
+      main(i)
+      break;
+    case 1:
+      var i = "docker images"
+      main(i)
+      break;
+    case 2:
+      var os = prompt("Name of Container!");
+      var image = prompt("Docker Image")
+      var i = "docker run -dit --name="+ os + " " + image        
+      main(i, "Launched!")
+      break;
+    case 3:
+      var i = "docker ps"
+      main(i)
+      break;
+    case 4:
+      var i = "docker ps -a"
+      main(i)
+      break;
+    case 5:
+      var image = prompt("Docker Image TO Remove!")
+      var i = "docker rmi " + image
+      main(i,"Removed!")
+      break;
+    case 6:
+      var container = prompt("Docker Container TO Remove!")
+      var i = "docker rm -f " + container
+      main(i,"Removed!")
+      break;      
+    case 7:
+      var xhr1 = new XMLHttpRequest();
+      xhr1.open("GET","http://192.168.43.237/cgi-bin/lw.py?x=docker ps -a -q" , false );
+      xhr1.send(); 
+      var res = xhr1.responseText;
+      var i = "docker rm -f " + res
+      if (res.length === 1) {
+        
+        myfunction("No Container Available!")
+        }
+      else {
+        main(i,"Deleted!" )
+       }
+      break;      
+    }
+}
+
+function main(i, j="") {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET","http://192.168.43.237/cgi-bin/lw.py?x=" + i, false );
+        xhr.send(); 
+        var output = xhr.responseText;
+        const needle= "Command not Found";
+        if (output.includes(needle)) {
+            output = output
+	    myfunction(output)
+           }
+       else {
+           output = output + j
+           myfunction(output)
+          }
+  }
+
+function myfunction(op) {
+     parent.f4.document.getElementById("footer").innerHTML = op;
+ }
+
+</script>
+

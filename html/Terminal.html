@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	<style>
+	body{ border-style: inset; border-width: 5px; border-color: rgb(8, 185, 255); background-color:  #46caf7;}
+        
+        .mainframe {
+		padding-left: 5px;
+		padding-top: 5px;"  
+     }
+	</style>
+    </head>
+<body>
+<div class= "mainframe">
+<span class= "mainframe 1">[root@localhost]# </span>
+<input class= "mainframe 2" id="terminalInput" size = 130>
+<br/>
+<div class= "mainframe 3" id= "d1"></div>
+
+
+<script>
+var input = document.getElementById("terminalInput");
+input.addEventListener("keyup", function(event) {
+  if (event.keyCode === 13) {
+   event.preventDefault();
+   main();
+  }
+});
+function main() {
+        var i = document.getElementById("terminalInput").value;
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET","http://192.168.43.237/cgi-bin/lw.py?x=" + i, false );
+        xhr.send(); 
+        var output = xhr.responseText;
+        //document.getElementById("d1").innerHTML = output;
+	myfunction(output)
+    } 
+function myfunction(op) {
+     parent.f4.document.getElementById("footer").innerHTML = op;
+ }
+</script>
+
+</body>
+</html>
+
